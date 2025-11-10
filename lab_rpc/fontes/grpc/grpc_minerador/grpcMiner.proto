@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+service Minerador {
+  rpc getTransactionID (Empty) returns (TransactionID);
+  rpc getChallenge (TransactionID) returns (Challenge);
+  rpc getTransactionStatus (TransactionID) returns (Status);
+  rpc getWinner (TransactionID) returns (Winner);
+  rpc getSolution (TransactionID) returns (SolutionInfo);
+  rpc submitChallenge (SubmitRequest) returns (SubmitResponse);
+}
+
+message Empty {}
+
+message TransactionID {
+  int32 id = 1;
+}
+
+message Challenge {
+  int32 transactionID = 1;
+  int32 difficulty = 2;
+}
+
+message Status {
+  int32 transactionID = 1;
+  int32 status = 2; // 0 resolvido, 1 pendente, -1 inválido
+}
+
+message Winner {
+  int32 transactionID = 1;
+  int32 clientID = 2;
+}
+
+message SolutionInfo {
+  int32 transactionID = 1;
+  int32 challenge = 2;
+  string solution = 3;
+  int32 winner = 4;
+}
+
+message SubmitRequest {
+  int32 transactionID = 1;
+  int32 clientID = 2;
+  string solution = 3;
+}
+
+message SubmitResponse {
+  int32 code = 1; // 1 válido, 0 inválido, 2 já resolvido, -1 id inválido
+}
